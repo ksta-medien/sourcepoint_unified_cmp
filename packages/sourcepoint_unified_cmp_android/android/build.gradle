@@ -10,6 +10,7 @@ buildscript {
 
     dependencies {
         classpath 'com.android.tools.build:gradle:8.13.2'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
 
@@ -21,6 +22,10 @@ rootProject.allprojects {
 }
 
 apply plugin: 'com.android.library'
+// Without this the `kotlin` extension below does not exist, and the module
+// only builds where the flutter tool happens to apply the kotlin plugin for
+// it, which it does not do on every flutter version.
+apply plugin: 'kotlin-android'
 
 android {
     compileSdk 34
