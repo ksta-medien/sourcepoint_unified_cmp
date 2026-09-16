@@ -205,6 +205,13 @@ class SourcepointUnifiedCmpPlugin :
 
         override fun onSpFinished(sPConsents: SPConsents) {
             Log.d("SourcepointUnifiedCmp", "onSpFinished")
+            // A custom action, a dismiss and a back press all end the
+            // message without onConsentReady, which is the only other
+            // place this is completed, so without this the future
+            // loadMessage() returned would stay pending forever.
+            if (!isInitialized.isCompleted) {
+                isInitialized.complete(sPConsents.toHostAPISPConsent())
+            }
             flutterApi.callOnSpFinished(sPConsents) {}
         }
     }
