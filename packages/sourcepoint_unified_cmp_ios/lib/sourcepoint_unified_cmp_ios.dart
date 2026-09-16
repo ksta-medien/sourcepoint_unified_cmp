@@ -267,7 +267,7 @@ class SourcepointUnifiedCmpIOS extends SourcepointUnifiedCmpPlatform {
   }
 
   @override
-  Future<SPConsent> loadMessage(SPConfig config) async {
+  Future<SPConsent> loadMessage(SPConfig config, {String? authId}) async {
     assert(config.campaigns.isNotEmpty, 'campaigns cannot be empty');
     final hostConsent = await _api.loadMessage(
       accountId: config.accountId,
@@ -279,6 +279,11 @@ class SourcepointUnifiedCmpIOS extends SourcepointUnifiedCmpPlatform {
       messageTimeout: config.messageTimeout,
       runCCPACampaign: config.campaigns.contains(CampaignType.ccpa),
       runGDPRCampaign: config.campaigns.contains(CampaignType.gdpr),
+      gdprTargetingParams:
+          config.targetingParams[CampaignType.gdpr] ?? const {},
+      ccpaTargetingParams:
+          config.targetingParams[CampaignType.ccpa] ?? const {},
+      authId: authId,
     );
     final consent = hostConsent.toSPConsent();
     return consent;
