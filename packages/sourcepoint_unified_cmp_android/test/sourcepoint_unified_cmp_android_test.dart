@@ -121,4 +121,23 @@ void main() {
     expect(sent, contains('user-42'));
   });
 
+  test('onAction reports the id of the custom button that was tapped', () {
+    ConsentAction? received;
+    SourcepointEventHandler(
+      delegate: _RecordingDelegate((action) => received = action),
+    ).onAction(
+      HostAPIConsentAction(
+        actionType: HostAPIActionType.custom,
+        pubData: '{}',
+        campaignType: HostAPICampaignType.gdpr,
+        customActionId: 'pur-subscribe',
+      ),
+    );
+    expect(received?.customActionId, 'pur-subscribe');
+  });
+}
+
+class _RecordingDelegate extends SourcepointEventDelegatePlatform {
+  _RecordingDelegate(void Function(ConsentAction) onAction)
+    : super(onAction: onAction);
 }

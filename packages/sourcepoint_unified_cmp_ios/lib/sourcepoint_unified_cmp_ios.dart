@@ -102,6 +102,7 @@ extension on messages.HostAPIConsentAction {
       actionType: actionType.toActionType(),
       pubData: jsonDecode(pubData),
       campaignType: campaignType.toCampaignType(),
+      customActionId: customActionId,
     );
   }
 }
